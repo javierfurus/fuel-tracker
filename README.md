@@ -1,5 +1,5 @@
-# express-typescript-skeleton
-Simple skeleton for TypeScript based Express.js application
+# Fuel-tracker
+A very simple Fuel usage tracker. You stopped to add gas? Log it!
 
 Run:
-docker-compose up
+```docker-compose up```

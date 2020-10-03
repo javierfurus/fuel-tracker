@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Express Typescript Skeleton",
+    "title": "Fuel Tracking App"
   },
   "schemes": [
     "http"
@@ -40,6 +40,15 @@
         "responses": {
           "200": {
             "description": "Trackeable values added"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete existing tracked record",
+        "operationId": "deleteFromTracking",
+        "responses": {
+          "200": {
+            "description": "Tracked value deleted"
           }
         }
       }
