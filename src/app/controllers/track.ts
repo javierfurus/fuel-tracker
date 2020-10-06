@@ -5,6 +5,7 @@ import { Table } from '../../lib/table';
 import { Gas } from '../../lib/gas';
 import { Roads } from '../../lib/roads'
 import trackSerializer from '../serializers/track';
+import { log } from 'console';
 
 export default {
   authorization: (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +13,7 @@ export default {
   },
   index: async (req: Request, res: Response) => {
     try {
-      const tracks: Array<Track> = await database(Table.track).select();
+      const tracks: Array<Track> = await database(Table.track);
       res.status(200).json(trackSerializer.index(tracks));
     } catch (error) {
       console.error(error);
@@ -66,7 +67,7 @@ export default {
         res.sendStatus(404);
       }
     } catch (error) {
-      console.error(error);
+      log(error);
       res.sendStatus(500);
     }
   },
