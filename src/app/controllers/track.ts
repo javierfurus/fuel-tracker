@@ -13,7 +13,7 @@ export default {
   },
   index: async (req: Request, res: Response) => {
     try {
-      const tracks: Array<Track> = await database(Table.track);
+      const tracks: Array<Track> = await database(Table.track).orderBy('id','desc');
       res.status(200).json(trackSerializer.index(tracks));
     } catch (error) {
       console.error(error);
