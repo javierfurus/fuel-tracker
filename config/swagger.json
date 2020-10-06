@@ -3,27 +3,10 @@
   "info": {
     "title": "Fuel Tracking App"
   },
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
-    "/": {
-      "get": {
-        "summary": "Hello World",
-        "operationId": "helloWorld",
-        "responses": {
-          "200": {
-            "description": "Return with Hello World message"
-          }
-        }
-      }
-    },
     "/track": {
       "get": {
         "summary": "Show tracked values",
@@ -37,6 +20,20 @@
       "post": {
         "summary": "Create new values",
         "operationId": "addToTracking",
+        "description": "",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Track object that will be recorded",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Track"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Trackeable values added"
@@ -51,6 +48,35 @@
             "description": "Tracked value deleted"
           }
         }
+      }
+    }
+  },
+  "definitions": {
+    "Track": {
+      "type": "object",
+      "required": ["tripState", "amountFilled", "roadType", "gasType", "amountFilled"],
+      "properties": {
+        "tripState": {
+          "type": "integer",
+          "example": 300
+        },
+        "amountFiled": {
+          "type": "integer",
+          "example": 20
+        },
+        "roadType": {
+          "type": "string",
+          "description": "type of the road where the trip was taken",
+          "enum": ["city", "highway", "motorway"]
+        },
+        "gasType": {
+          "type": "string",
+          "description": "type of the gas used for the trip",
+          "enum": ["OG 85 +", "OG 90 +", "Diesel"]
+        }
+      },
+      "xml": {
+        "name": "Pet"
       }
     }
   }
