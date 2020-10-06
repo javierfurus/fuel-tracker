@@ -58,7 +58,6 @@ export default {
   create: async (req: Request, res: Response) => {
     try {
       const track: Partial<Track> = {
-        date: req.query.date,
         tripState: req.query.tripState,
         roadType: roadTypeChecker(req.query.roadType),
         gasType: gasTypeChecker(req.query.gasType),
@@ -77,7 +76,6 @@ export default {
       const track: Track = await database(Table.track).where({ id: req.params.id }).first();
       if (track) {
         const updatedTrack: Partial<Track> = {
-            date: req.body.date,
             tripState: req.body.tripState,
             roadType: roadTypeChecker(req.query.roadType),
             gasType: req.body.gasType,
