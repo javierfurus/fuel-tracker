@@ -37,7 +37,6 @@
             }
           }
         ],
-<<<<<<< HEAD
         "responses": {
           "200": {
             "description": "Tracked data recorded successfully"
@@ -81,14 +80,6 @@
           },
           "404": {
             "description": "Tracked data not found"
-=======
-        "responses": {
-          "200": {
-            "description": "Tracked data recorded successfully"
-          },
-          "400": {
-            "description": "Invalid data provided"
->>>>>>> 08de68551ec887ddd0713465e01398df415f2250
           }
         }
       },
