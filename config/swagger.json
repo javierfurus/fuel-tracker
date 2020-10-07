@@ -14,6 +14,9 @@
         "responses": {
           "200": {
             "description": "Return with tracked values"
+          },
+          "404": {
+            "description": "No data found"
           }
         }
       },
@@ -35,13 +38,16 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Tracked data recorded successfully"
+          },
           "400": {
             "description": "Invalid data provided"
           }
         }
       }
     },
-    "/track/{id}":{
+    "/track/{id}": {
       "delete": {
         "summary": "Delete existing tracked record",
         "operationId": "deleteFromTracking",
@@ -57,11 +63,52 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Data deleted successfully"
+          },
           "400": {
             "description": "Invalid ID supplied"
           },
           "404": {
             "description": "Tracked data not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update existing tracked record",
+        "operationId": "updateTracking",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "type": "integer",
+            "in": "path",
+            "name": "id",
+            "description": "Track that needs to be updated",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Track that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Track"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Data updated successfully"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Tracked data not found"
+          },
+          "405": {
+            "description": "Validation exception"
           }
         }
       }

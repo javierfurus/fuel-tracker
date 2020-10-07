@@ -13,7 +13,7 @@ export default {
   },
   index: async (req: Request, res: Response) => {
     try {
-      const tracks: Array<Track> = await database(Table.track);
+      const tracks: Track[] = await database(Table.track).orderBy('id','desc');
       res.status(200).json(trackSerializer.index(tracks));
     } catch (error) {
       console.error(error);
@@ -79,7 +79,7 @@ export default {
         await database(Table.track)
           .where({ id: req.params.id })
           .delete();
-        res.sendStatus(204);
+        res.sendStatus(200);
       } else {
         res.sendStatus(404);
       }
