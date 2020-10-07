@@ -1,10 +1,10 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('track', table => {
+  return knex.schema.createTable('track', (table) => {
     table.increments('id').primary();
     table.timestamp('date');
     table.integer('tripState');
-    table.string('roadType');
-    table.string('gasType');
+    table.enu('roadType', ['city', 'highway', 'motorway']);
+    table.enu('gasType', ['OG 85 +', 'OG 90 +', 'Diesel']);
     table.integer('amountFilled');
   });
 };

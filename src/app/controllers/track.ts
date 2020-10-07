@@ -5,37 +5,15 @@ import { Table } from '../../lib/table';
 import { Gas } from '../../lib/gas';
 import { Roads } from '../../lib/roads'
 import trackSerializer from '../serializers/track';
-const roadTypeChecker = (roadType) => {
-  switch (roadType) {
-    case 'city':
-      return Roads.City;
-    case 'motorway':
-      return Roads.Motorway;
-    case 'highway': 
-      return Roads.Highway;
-    default:
-        throw new Error('Wrong road type has been added!');
-  }
-}
-const gasTypeChecker = (gasType) => {
-  switch (gasType) {
-    case 'diesel':
-      return Gas.Diesel;
-    case 'og85plus':
-      return Gas.OG85P;
-    case 'og90plus': 
-      return Gas.OG90P;
-    default:
-      throw new Error('Wrong gas type has been added!');
-  }
-}
+import { log } from 'console';
+
 export default {
   authorization: (req: Request, res: Response, next: NextFunction) => {
     next();
   },
   index: async (req: Request, res: Response) => {
     try {
-      const tracks: Array<Track> = await database(Table.track).select();
+      const tracks: Array<Track> = await database(Table.track);
       res.status(200).json(trackSerializer.index(tracks));
     } catch (error) {
       console.error(error);
@@ -58,10 +36,10 @@ export default {
   create: async (req: Request, res: Response) => {
     try {
       const track: Partial<Track> = {
-        tripState: req.query.tripState,
-        roadType: roadTypeChecker(req.query.roadType),
-        gasType: gasTypeChecker(req.query.gasType),
-        amountFilled: req.query.amountFilled
+        tripState: req.body.tripState,
+        roadType: req.body.roadType,
+        gasType: req.body.gasType,
+        amountFilled: req.body.amountFilled
       };
       await database(Table.track).insert(track);
       res.sendStatus(200);
@@ -77,7 +55,7 @@ export default {
       if (track) {
         const updatedTrack: Partial<Track> = {
             tripState: req.body.tripState,
-            roadType: roadTypeChecker(req.query.roadType),
+            roadType: req.body.roadType,
             gasType: req.body.gasType,
             amountFilled: req.body.amountFilled
           };
@@ -89,7 +67,7 @@ export default {
         res.sendStatus(404);
       }
     } catch (error) {
-      console.error(error);
+      log(error);
       res.sendStatus(500);
     }
   },
