@@ -21,7 +21,7 @@ services:
   fuel-tracker:
     container_name: fuel-tracker
     build:
-      context: ./
+      context: ./fuel-tracker
       dockerfile: Dockerfile.development
     expose:
       - "3000"
@@ -30,12 +30,30 @@ services:
     depends_on:
       - fuel-tracker-db
     volumes:
-      - "./:/usr/src/app"
+      - "./fuel-tracker/:/usr/src/app"
       - "~/.ssh:/root/.ssh"
     networks:
       inner:
         aliases:
           - fuel-tracker
+  fuel-tracker-frontend:
+    container_name: fuel-tracker-frontend
+    build:
+      context: ./fuel-tracker-frontend
+      dockerfile: Dockerfile.development
+    volumes:
+      - "./fuel-tracker-frontend:/usr/src/app"
+    expose:
+      - "4200"
+    ports:
+      - "3002:3002" # Port mapping
+      - "4200:4200"
+    depends_on:
+      - fuel-tracker
+    networks:
+      inner:
+        aliases:
+          - fuel-tracker-frontend
 networks:
   inner: {}
 volumes:

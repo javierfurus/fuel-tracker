@@ -1,0 +1,19 @@
+PreCommit:
+  SemiStandard:
+    enabled: true
+    flags: ["--verbose", "--fix"]
+CommitMsg:
+  MessageFormat:
+    enabled: true
+    description: "Check commit message matches expected pattern"
+    pattern: '((\d*)\.(\d*)\.(\d*)|Merge(.*)|refs #(\d*) (.*))'
+    expected_pattern_message: "refs #<Issue Id> <Commit Message Description>"
+    sample_message: "refs #1234 commit message description"
+  TrailingPeriod:
+    enabled: false
+  SingleLineSubject:
+    enabled: false
+  CapitalizedSubject:
+    enabled: false
+  TextWidth:
+    enabled: false

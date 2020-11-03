@@ -3,7 +3,7 @@ import { Track } from '../models/track';
 import { database } from '../../lib/database';
 import { Table } from '../../lib/table';
 import trackSerializer from '../serializers/track';
-import { log } from 'console';
+import logger from '../../lib/logger';
 
 export default {
   authorization: (req: Request, res: Response, next: NextFunction) => {
@@ -11,10 +11,10 @@ export default {
   },
   index: async (req: Request, res: Response) => {
     try {
-      const tracks: Track[] = await database(Table.track).orderBy('id','desc');
+      const tracks: Track[] = await database(Table.track).orderBy('id', 'desc');
       res.status(200).json(trackSerializer.index(tracks));
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       res.sendStatus(500);
     }
   },
@@ -27,7 +27,7 @@ export default {
         res.sendStatus(404);
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       res.sendStatus(500);
     }
   },
@@ -42,7 +42,7 @@ export default {
       await database(Table.track).insert(track);
       res.sendStatus(200);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       res.sendStatus(500);
     }
   },
@@ -52,11 +52,11 @@ export default {
       const track: Track = await database(Table.track).where({ id: req.params.id }).first();
       if (track) {
         const updatedTrack: Partial<Track> = {
-            tripState: req.body.tripState,
-            roadType: req.body.roadType,
-            gasType: req.body.gasType,
-            amountFilled: req.body.amountFilled
-          };
+          tripState: req.body.tripState,
+          roadType: req.body.roadType,
+          gasType: req.body.gasType,
+          amountFilled: req.body.amountFilled
+        };
         await database(Table.track)
           .where({ id: req.params.id })
           .update(updatedTrack);
@@ -65,7 +65,7 @@ export default {
         res.sendStatus(404);
       }
     } catch (error) {
-      log(error);
+      logger.error(error);
       res.sendStatus(500);
     }
   },
@@ -82,7 +82,7 @@ export default {
         res.sendStatus(404);
       }
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       res.sendStatus(500);
     }
   }
