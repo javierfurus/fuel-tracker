@@ -1,6 +1,7 @@
 import { Track } from "../models/track";
 
 interface TrackSerializer {
+  id: number,
   date: string;
   tripState: number;
   roadType: string;
@@ -10,6 +11,7 @@ interface TrackSerializer {
 
 const show = (track: Track): TrackSerializer => {
   return {
+    id: track.id,
     date: track.date,
     tripState: track.tripState,
     roadType: track.roadType,

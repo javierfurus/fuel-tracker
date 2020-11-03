@@ -1,0 +1,214 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Fuel Tracking App"
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/track": {
+      "options": {
+        "responses": {
+          "default": {
+            "description": "CORS headers",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "default": "*"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string",
+                "default": "*"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Show tracked values",
+        "operationId": "track",
+        "responses": {
+          "200": {
+            "description": "Return with tracked values"
+          },
+          "404": {
+            "description": "No data found"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new values",
+        "operationId": "addToTracking",
+        "description": "",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Track object that will be recorded",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Track"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tracked data recorded successfully"
+          },
+          "400": {
+            "description": "Invalid data provided"
+          }
+        }
+      }
+    },
+    "/track/{id}": {
+      "options": {
+        "responses": {
+          "default": {
+            "description": "CORS headers",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "default": "http://localhost:4200"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string",
+                "default": "*"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete existing tracked record",
+        "operationId": "deleteFromTracking",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Track id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data deleted successfully"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Tracked data not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update existing tracked record",
+        "operationId": "updateTracking",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "in": "path",
+            "name": "id",
+            "description": "Track that needs to be updated",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Track that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Track"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Data updated successfully"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Tracked data not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Track": {
+      "type": "object",
+      "required": [
+        "tripState",
+        "amountFilled",
+        "roadType",
+        "gasType"
+      ],
+      "properties": {
+        "sender": {
+          "type": "integer",
+          "example": 300
+        },
+        "amountFilled": {
+          "type": "integer",
+          "example": 20
+        },
+        "roadType": {
+          "type": "string",
+          "description": "type of the road where the trip was taken",
+          "enum": [
+            "city",
+            "highway",
+            "motorway"
+          ]
+        },
+        "gasType": {
+          "type": "string",
+          "description": "type of the gas used for the trip",
+          "enum": [
+            "OG 85 +",
+            "OG 90 +",
+            "Diesel"
+          ]
+        }
+      },
+      "xml": {
+        "name": "Tracker"
+      }
+    }
+  }
+}
