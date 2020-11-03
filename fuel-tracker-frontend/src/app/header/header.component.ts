@@ -3,16 +3,23 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-header',
   template: `
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="mat-elevation-z8">
   <span>Fuel Tracker</span>
   <span class="spacer"></span>
   <button mat-flat-button color="accent" [routerLink]="'/list'"><mat-icon aria-hidden="false" aria-label="Add new item">home</mat-icon></button>
 </mat-toolbar>
 `,
   styles: [
-    `.spacer {
+    `
+  .spacer {
     flex: 1 1 auto;
-  }`
+  }
+  :host {
+          position: fixed,
+          top: 0,
+          left: 0
+      }
+  `
   ]
 })
 export class HeaderComponent implements OnInit {

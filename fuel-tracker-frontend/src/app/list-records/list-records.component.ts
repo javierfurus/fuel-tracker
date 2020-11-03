@@ -8,7 +8,7 @@ import { RecordsService, TrackedRecord } from '../records.service';
 @Component({
   selector: 'app-list-records',
   template: `
-<table mat-table [dataSource]="dataSource" align="center" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" text-align="center" class="mat-elevation-z8">
   <ng-container matColumnDef="date">
     <th mat-header-cell *matHeaderCellDef> Date </th>
     <td mat-cell *matCellDef="let track"> {{track.date | date: 'medium'}} </td>
@@ -56,7 +56,19 @@ import { RecordsService, TrackedRecord } from '../records.service';
   }
   table {
     width: 100%;
-  }`]
+  }
+  th.mat-header-cell {
+  text-align: center;
+  }
+  td {
+    text-align: center;
+  }
+ :host {
+          position: fixed,
+          top: 0,
+          left: 0
+      }
+   `]
 })
 export class ListRecordsComponent implements OnInit {
   title = 'list-records';
@@ -68,7 +80,7 @@ export class ListRecordsComponent implements OnInit {
   displayedColumns: string[] = ['date', 'trip', 'road', 'gas', 'lastFill', 'actions'];
   constructor(
     private dialog: MatDialog,
-    public recordsService: RecordsService,) { }
+    public recordsService: RecordsService) { }
 
   editDialog(track): void {
     const editDialogConfig = new MatDialogConfig();

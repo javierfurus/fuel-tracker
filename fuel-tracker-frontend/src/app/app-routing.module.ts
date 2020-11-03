@@ -7,7 +7,7 @@ import { ListRecordsComponent } from './list-records/list-records.component';
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent
+    component: ListRecordsComponent,
   },
   {
     path: 'list',
