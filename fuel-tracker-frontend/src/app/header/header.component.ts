@@ -14,11 +14,6 @@ import { Component, OnInit } from '@angular/core';
   .spacer {
     flex: 1 1 auto;
   }
-  :host {
-          position: fixed,
-          top: 0,
-          left: 0
-      }
   `
   ]
 })

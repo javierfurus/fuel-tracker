@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 import { RecordDialogComponent } from '../record-dialog/record-dialog.component';
 import { RecordsService, TrackedRecord } from '../records.service';
+
 @Component({
   selector: 'app-list-records',
   template: `
@@ -63,85 +62,43 @@ import { RecordsService, TrackedRecord } from '../records.service';
   td {
     text-align: center;
   }
- :host {
-          position: fixed,
-          top: 0,
-          left: 0
-      }
-   `]
+  `]
 })
 export class ListRecordsComponent implements OnInit {
-  title = 'list-records';
-  tracks: TrackedRecord[];
-  result = '';
-  interval: any;
-  deletedRow: string;
-  dataSource: MatTableDataSource<TrackedRecord>;
   displayedColumns: string[] = ['date', 'trip', 'road', 'gas', 'lastFill', 'actions'];
+  dataSource = this.recordsService.records$;
+
   constructor(
     private dialog: MatDialog,
     public recordsService: RecordsService) { }
 
-  editDialog(track): void {
-    const editDialogConfig = new MatDialogConfig();
-
-    editDialogConfig.disableClose = true;
-    editDialogConfig.autoFocus = true;
-
-    editDialogConfig.data = {
-      track
-    };
-
-    const dialogRef = this.dialog.open(RecordDialogComponent, editDialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      record => this.recordsService.onUpdateRecord(record)
-    );
-  }
-  creatRecordDialog(): void {
-    const createRecordDialogConfig = new MatDialogConfig();
-    const isNewRecord = true;
-
-    createRecordDialogConfig.disableClose = true;
-    createRecordDialogConfig.autoFocus = true;
-    createRecordDialogConfig.data = {
-      isNewRecord
-    };
-    const dialogRef = this.dialog.open(RecordDialogComponent, createRecordDialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      record => this.recordsService.onCreateRecord(record)
-    );
-  }
-  confirmDialog(track): void {
-    const message = `Are you sure you want to delete this item?`;
-    const confirmTitle = 'Confirm action';
-
-    const dialogData = new ConfirmDialogModel(confirmTitle, message);
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: "400px",
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult === true) {
-        this.recordsService.onDeleteRecord(track);
-      }
-    });
-
-
-  }
   ngOnInit(): void {
-    this.fillRows();
-    this.interval = setInterval(() => {
-      this.fillRows();
-    }, 3000);
+    this.recordsService.fetchRecords();
   }
-  fillRows(): void {
-    this.recordsService.fetchRecords().subscribe(res => {
-      this.tracks = res;
-      this.dataSource = new MatTableDataSource(this.tracks);
+
+  editDialog(record: TrackedRecord): void {
+    this.dialog.open(RecordDialogComponent, {
+      data: record,
+      disableClose: true,
+      autoFocus: true,
+    });
+  }
+
+  creatRecordDialog(): void {
+    this.dialog.open(RecordDialogComponent, {
+      disableClose: true,
+      autoFocus: true,
+    });
+  }
+
+  confirmDialog(track: TrackedRecord): void {
+    this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '400px',
+      data: {
+        id: track.id,
+        confirmTitle: 'Are you sure you want to delete this item?',
+        message: 'Confirm action',
+      }
     });
   }
 }

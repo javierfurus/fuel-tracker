@@ -17,10 +17,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { RecordsService } from './records.service';
 import { HeaderComponent } from './header/header.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -48,13 +48,9 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatTableModule,
     MatSelectModule,
     MatToolbarModule,
-
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
+    MatSnackBarModule,
   ],
   providers: [
-    NgxMatNativeDateModule,
     MatNativeDateModule,
     MatDatepickerModule,
     RecordsService

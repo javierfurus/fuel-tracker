@@ -7,7 +7,8 @@ import { ListRecordsComponent } from './list-records/list-records.component';
 const routes: Routes = [
   {
     path: '',
-    component: ListRecordsComponent,
+    redirectTo: 'list',
+    pathMatch: 'full',
   },
   {
     path: 'list',
@@ -16,7 +17,8 @@ const routes: Routes = [
   {
     path: 'edit',
     component: RecordDialogComponent
-  }
+  },
+  {path: '**', redirectTo: 'list'},
 ];
 
 @NgModule({
