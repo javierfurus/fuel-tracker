@@ -2,7 +2,7 @@
 
 Run ```docker-compose up```
 
-After that ```docker-exec -it fuel-tracker sh```
+After that ```docker exec -it fuel-tracker sh```
 
 Within that run: ```npm run db:migrate```
 
