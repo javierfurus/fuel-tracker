@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@hapi/joi": "^17.1.1",
+    "@types/boom": "^7.3.0",
     "@types/express": "^4.17.2",
-    "@types/hapi": "^18.0.4",
     "@types/hapi__hapi": "^20.0.2",
     "@types/hapi__joi": "^17.1.6",
     "@types/node": "^12.12.27",
@@ -26,6 +26,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@hapi/boom": "^9.1.0",
     "@hapi/hapi": "^20.0.2",
     "@types/knex": "^0.16.1",
     "@types/swagger-express-middleware": "^1.0.10",

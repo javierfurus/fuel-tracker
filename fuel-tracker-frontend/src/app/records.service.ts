@@ -23,7 +23,7 @@ export class RecordsService {
   records$: BehaviorSubject<TrackedRecord[]> = new BehaviorSubject<TrackedRecord[]>([]);
 
   constructor(private http: HttpClient,
-              private readonly snackBar: MatSnackBar) { }
+    private readonly snackBar: MatSnackBar) { }
 
   async deleteRecord(id: number): Promise<void> {
     try {
