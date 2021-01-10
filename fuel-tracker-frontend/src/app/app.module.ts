@@ -17,10 +17,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card'
 import { RecordsService } from './records.service';
 import { HeaderComponent } from './header/header.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ListRecordsComponent,
     HeaderComponent,
     ConfirmDialogComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -49,6 +51,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSelectModule,
     MatToolbarModule,
     MatSnackBarModule,
+    MatCardModule,
   ],
   providers: [
     MatNativeDateModule,

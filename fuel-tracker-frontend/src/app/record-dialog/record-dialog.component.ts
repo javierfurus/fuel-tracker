@@ -64,9 +64,9 @@ export class RecordDialogComponent implements OnInit {
   isNewRecord: boolean;
 
   constructor(private fb: FormBuilder,
-              private dialogRef: MatDialogRef<RecordDialogComponent>,
-              private readonly reportService: RecordsService,
-              @Inject(MAT_DIALOG_DATA) public data: TrackedRecord) {
+    private dialogRef: MatDialogRef<RecordDialogComponent>,
+    private readonly recordsService: RecordsService,
+    @Inject(MAT_DIALOG_DATA) public data: TrackedRecord) {
     this.form = this.fb.group({
       id: null,
       amountFilled: [null, Validators.required],
@@ -80,15 +80,19 @@ export class RecordDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data) {
       this.form.patchValue(this.data);
+      this.isNewRecord = false;
+      this.date = this.data.date;
+    } else {
+      this.isNewRecord = true;
     }
   }
 
   async save(): Promise<void> {
     if (!this.data) {
-      this.reportService.createRecord(this.form.getRawValue(), this.dialogRef);
+      this.recordsService.createRecord(this.form.getRawValue(), this.dialogRef);
       return;
     }
-    await this.reportService.updateRecord(this.form.getRawValue());
+    await this.recordsService.updateRecord(this.form.getRawValue(), this.dialogRef);
     this.dialogRef.close();
   }
 }

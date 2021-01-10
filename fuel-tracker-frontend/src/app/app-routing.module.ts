@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { RecordDialogComponent } from './record-dialog/record-dialog.component';
 import { ListRecordsComponent } from './list-records/list-records.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'list',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
   {
@@ -15,10 +16,14 @@ const routes: Routes = [
     component: ListRecordsComponent
   },
   {
+    path: 'dashboard',
+    component: DashboardComponent
+  },
+  {
     path: 'edit',
     component: RecordDialogComponent
   },
-  {path: '**', redirectTo: 'list'},
+  { path: '**', redirectTo: 'dashboard' },
 ];
 
 @NgModule({

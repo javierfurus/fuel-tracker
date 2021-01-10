@@ -18,26 +18,6 @@ services:
       inner:
         aliases:
           - fuel-tracker-db
-  fuel-tracker:
-    container_name: fuel-tracker
-    build:
-      context: ./fuel-tracker
-      dockerfile: Dockerfile.development
-    environment:
-      PORT: 3001
-    expose:
-      - "3001"
-    ports:
-      - "3001:3001"
-    depends_on:
-      - fuel-tracker-db
-    volumes:
-      - "./fuel-tracker/:/usr/src/app"
-      - "~/.ssh:/root/.ssh"
-    networks:
-      inner:
-        aliases:
-          - fuel-tracker
 
   fuel-tracker-hapi:
     container_name: fuel-tracker-hapi
@@ -45,11 +25,11 @@ services:
       context: ./fuel-tracker-hapi
       dockerfile: Dockerfile.development
     environment:
-      PORT: 3010
+      PORT: 3001
     expose:
-      - "3010"
+      - "3001"
     ports:
-      - "3010:3010"
+      - "3001:3001"
     depends_on:
       - fuel-tracker-db
     volumes:
@@ -72,7 +52,7 @@ services:
     ports:
       - "4200:4200"
     depends_on:
-      - fuel-tracker
+      - fuel-tracker-hapi
     networks:
       inner:
         aliases:

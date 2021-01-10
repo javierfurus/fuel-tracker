@@ -1,5 +1,5 @@
 export enum Road {
-    City = 'city',
-    Highway = 'highway',
-    Motorway = 'motorway'
+    City = 'City',
+    Highway = 'Highway',
+    Motorway = 'Motorway'
 }

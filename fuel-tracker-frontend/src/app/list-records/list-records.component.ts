@@ -43,7 +43,7 @@ import { RecordsService, TrackedRecord } from '../records.service';
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<button mat-fab class="floatingButton" (click)="creatRecordDialog()">
+<button mat-fab class="floatingButton" (click)="createRecordDialog()">
   <mat-icon aria-hidden="false" class="float" aria-label="Add new item">add</mat-icon>
 </button>
 `,
@@ -66,7 +66,7 @@ import { RecordsService, TrackedRecord } from '../records.service';
 })
 export class ListRecordsComponent implements OnInit {
   displayedColumns: string[] = ['date', 'trip', 'road', 'gas', 'lastFill', 'actions'];
-  dataSource = this.recordsService.records$;
+  dataSource = this.recordsService.records;
 
   constructor(
     private dialog: MatDialog,
@@ -80,14 +80,14 @@ export class ListRecordsComponent implements OnInit {
     this.dialog.open(RecordDialogComponent, {
       data: record,
       disableClose: true,
-      autoFocus: true,
+      autoFocus: true
     });
   }
 
-  creatRecordDialog(): void {
+  createRecordDialog(): void {
     this.dialog.open(RecordDialogComponent, {
       disableClose: true,
-      autoFocus: true,
+      autoFocus: true
     });
   }
 

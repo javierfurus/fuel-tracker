@@ -1,7 +1,21 @@
 {
   "compilerOptions": {
+    "outDir": "build",
+    "target": "es2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "strictNullChecks": true
-  }
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "src/**/**.ts",
+    "test/**/**.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

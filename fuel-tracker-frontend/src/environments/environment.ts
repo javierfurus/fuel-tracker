@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  FUEL_TRACKER_API: 'http://localhost:3001/track/'
+  FUEL_TRACKER_API: 'http://localhost:3001'
 };
 
 /*

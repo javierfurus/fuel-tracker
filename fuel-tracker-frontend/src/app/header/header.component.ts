@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 <mat-toolbar color="primary" class="mat-elevation-z8">
   <span>Fuel Tracker</span>
   <span class="spacer"></span>
-  <button mat-flat-button color="accent" [routerLink]="'/list'"><mat-icon aria-hidden="false" aria-label="Add new item">home</mat-icon></button>
+  <button mat-flat-button color="accent" [routerLink]="'/dashboard'"><mat-icon aria-hidden="false" aria-label="Add new item">home</mat-icon></button>
 </mat-toolbar>
 `,
   styles: [
