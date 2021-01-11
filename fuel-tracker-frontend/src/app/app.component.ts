@@ -3,8 +3,10 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <app-header></app-header>
-    <router-outlet></router-outlet>
+    <main class="content-container" style="margin-top: 100px;">
+      <router-outlet></router-outlet>
+</main>
   `,
   styles: [``],
 })
-export class AppComponent {}
+export class AppComponent { }

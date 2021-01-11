@@ -23,6 +23,8 @@ import { HeaderComponent } from './header/header.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CarsService } from './cars.service';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -52,11 +54,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatToolbarModule,
     MatSnackBarModule,
     MatCardModule,
+    NgxChartsModule
   ],
   providers: [
     MatNativeDateModule,
     MatDatepickerModule,
-    RecordsService
+    RecordsService,
+    CarsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [RecordDialogComponent]

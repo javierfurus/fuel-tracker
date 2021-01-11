@@ -1,10 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CarRecord } from '../cars.service';
 import { Gas } from '../lib/gas';
 import { Road } from '../lib/road';
 import { RecordsService, TrackedRecord } from '../records.service';
-
+export interface DashboardDialogData {
+  record: TrackedRecord,
+  car: CarRecord
+};
 @Component({
   selector: 'app-record-dialog',
   template: `
@@ -32,28 +36,31 @@ import { RecordsService, TrackedRecord } from '../records.service';
     </mat-select>
     </mat-form-field>
         <br>
+        <p *ngIf="isNewRecord; else editedRecord" [ngStyle]="{'color':tankIsFull ? 'red' : 'warn'}">Current gas level: {{currentFuelLevel + form.controls.amountFilled.value}} L</p>
+        <ng-template #editedRecord><p [ngStyle]="{'color':tankIsFull ? 'red' : 'warn'}">Current gas level: {{(currentFuelLevel - data.record.amountFilled) + form.controls.amountFilled.value}} L</p>
+</ng-template>
+        <p>Tank's size: {{tankSize}} L</p>
         <mat-form-field>
-            <input matInput placeholder="Amount filled" type="number" formControlName="amountFilled" required>
+            <input id="amountFilled" matInput placeholder="Last fill" min=0 [max]="tankSize" type="number" formControlName="amountFilled" required>
+            <mat-error *ngIf="tankIsFull; else otherError"> You cannot exceed {{tankSize}} L!</mat-error>
+            <ng-template #otherError>Please pick a number between 0 and {{tankSize}}!</ng-template>
         </mat-form-field>
         <br>
         <mat-form-field>
             <input matInput placeholder="Trip state" type="number" formControlName="tripState" required>
         </mat-form-field>
         <br>
-        <!-- <mat-form-field>
-            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fill time" formControlName="date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker [startAt]="date"></ngx-mat-datetime-picker>
-        </mat-form-field> -->
     </mat-dialog-content>
     <mat-dialog-actions align="center">
         <button mat-flat-button color="warn" mat-dialog-close>Close</button>
         <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">Save</button>
     </mat-dialog-actions>
   `,
-  styles: [`  `]
+  styles: [` 
+  .mat-form-field {
+    margin: 1em 0 1em 0;
+  } `]
 })
-
 
 export class RecordDialogComponent implements OnInit {
   gasTypes = Gas;
@@ -62,33 +69,51 @@ export class RecordDialogComponent implements OnInit {
   form: FormGroup;
   date = new Date();
   isNewRecord: boolean;
-
+  currentFuelLevel: number;
+  tankIsFull: boolean = false;
+  tankSize: number;
   constructor(private fb: FormBuilder,
     private dialogRef: MatDialogRef<RecordDialogComponent>,
     private readonly recordsService: RecordsService,
-    @Inject(MAT_DIALOG_DATA) public data: TrackedRecord) {
-    this.form = this.fb.group({
-      id: null,
-      amountFilled: [null, Validators.required],
-      roadType: null,
-      tripState: [null, Validators.required],
-      gasType: [null],
-      date: this.date
-    });
+    @Inject(MAT_DIALOG_DATA) public data: DashboardDialogData) {
   }
 
   ngOnInit(): void {
-    if (this.data) {
-      this.form.patchValue(this.data);
+    this.currentFuelLevel = this.data.car.currentFuelLevel;
+    this.tankSize = this.data.car.tankSize;
+    this.form = new FormGroup({
+      'id': new FormControl(null),
+      'amountFilled': new FormControl(0, [Validators.required, this.fuelChecker.bind(this)]),
+      'roadType': new FormControl(null),
+      'tripState': new FormControl(null, Validators.required),
+      'gasType': new FormControl(null, Validators.required),
+    })
+
+    if (this.data.record) {
+      this.form.patchValue(this.data.record);
       this.isNewRecord = false;
-      this.date = this.data.date;
+      this.date = this.data.record.date;
     } else {
       this.isNewRecord = true;
+    };
+  }
+
+  fuelChecker(formControl: FormControl) {
+    if (this.isNewRecord && (formControl.value + this.currentFuelLevel) > this.tankSize) {
+      this.tankIsFull = true;
+      return { valid: false }
+    } else if (this.isNewRecord === false && (formControl.value + (this.currentFuelLevel - this.data.record.amountFilled)) > this.tankSize) {
+      this.tankIsFull = true;
+      return { valid: false }
+    } else {
+      this.tankIsFull = false;
+      return (formControl.value <= this.tankSize) ? null : { valid: false };
     }
+
   }
 
   async save(): Promise<void> {
-    if (!this.data) {
+    if (!this.data.record) {
       this.recordsService.createRecord(this.form.getRawValue(), this.dialogRef);
       return;
     }

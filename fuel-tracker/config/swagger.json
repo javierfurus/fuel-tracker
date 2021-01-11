@@ -191,7 +191,7 @@
           "type": "string",
           "description": "type of the road where the trip was taken",
           "enum": [
-            "city",
+            "City",
             "highway",
             "motorway"
           ]

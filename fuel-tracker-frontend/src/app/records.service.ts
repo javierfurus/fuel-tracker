@@ -16,7 +16,7 @@ export interface TrackedRecord {
   amountFilled: number;
 }
 export interface TripLeft {
-  tripLeft: string,
+  tripLeft: number,
   roadType: string;
 }
 @Injectable({

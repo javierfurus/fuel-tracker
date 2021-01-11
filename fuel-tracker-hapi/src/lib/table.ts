@@ -1,3 +1,4 @@
 export enum Table {
-  track = 'track'
+  track = 'track',
+  car = 'car'
 }

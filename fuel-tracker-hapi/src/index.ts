@@ -45,6 +45,7 @@ const server = Hapi.server({
   ]);
 
   await server.register(require('./app/routes/track'), { routes: { prefix: '/track' } });
+  await server.register(require('./app/routes/car'), { routes: { prefix: '/car' } });
 
   await server.start();
   console.log('Server running at:', server.info.uri);

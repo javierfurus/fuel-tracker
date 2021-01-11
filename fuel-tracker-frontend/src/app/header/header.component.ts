@@ -3,10 +3,13 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-header',
   template: `
-<mat-toolbar color="primary" class="mat-elevation-z8">
-  <span>Fuel Tracker</span>
-  <span class="spacer"></span>
-  <button mat-flat-button color="accent" [routerLink]="'/dashboard'"><mat-icon aria-hidden="false" aria-label="Add new item">home</mat-icon></button>
+<mat-toolbar color="primary">
+  <mat-toolbar color="primary" class="content-container">
+    <span>Fuel Tracker</span>
+    <span class="spacer"></span>
+    <button mat-flat-button color="accent" [routerLink]="'/dashboard'"><mat-icon aria-hidden="false" aria-label="Dashboard">dashboard</mat-icon></button>
+    <button mat-flat-button color="accent" [routerLink]="'/list'"><mat-icon aria-hidden="false" aria-label="Detailed list">list</mat-icon></button>
+  </mat-toolbar>
 </mat-toolbar>
 `,
   styles: [

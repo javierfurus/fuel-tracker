@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.increments('id').primary();
     table.timestamp('date');
     table.integer('tripState');
-    table.enu('roadType', ['city', 'highway', 'motorway']);
+    table.enu('roadType', ['City', 'Highway', 'Motorway']);
     table.enu('gasType', ['OG 85 +', 'OG 90 +', 'Diesel']);
     table.integer('amountFilled');
   });
