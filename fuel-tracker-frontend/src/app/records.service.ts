@@ -35,7 +35,7 @@ export class RecordsService {
     try {
       await this.http.delete(`${API_URL}/track/${id}`, { responseType: 'text' }).toPromise();
     } catch (e) {
-      this.snackBar.open('Error' + e, 'OK');
+      this.snackBar.open('Error' + e.message, 'OK');
     }
     this.snackBar.open('Record Deleted', 'OK');
     return;
@@ -45,7 +45,7 @@ export class RecordsService {
     try {
       await this.http.put(`${API_URL}/track/${trackRow.id}`, trackRow).toPromise();
     } catch (e) {
-      this.snackBar.open('Error' + e, 'OK');
+      this.snackBar.open('Error' + e.message, 'OK');
     }
     this.snackBar.open('Record Updated', 'OK');
     ref.close();
@@ -56,19 +56,22 @@ export class RecordsService {
     this.http.post(`${API_URL}/track`, newRecord, { responseType: 'text' }).subscribe(() => {
       this.snackBar.open('Record Created', 'OK');
       ref.close();
-    }, error => this.snackBar.open('Error' + JSON.stringify(error), 'OK'));
+    }, error => {
+      const thrownError = JSON.parse(error.error);
+      this.snackBar.open('Error: ' + thrownError.message, 'OK')
+    });
   }
 
   public fetchTripRecord(): void {
     this.http.get(`${API_URL}/track/totalTrip`).subscribe((totalTrip: Partial<TrackedRecord[]>) => {
       this.totalTripRecord.next(totalTrip)
-    }, error => this.snackBar.open('Error' + JSON.stringify(error), 'OK'));
+    }, error => this.snackBar.open('Error' + error.message, 'OK'));
   }
 
   public fetchRecords(): void {
     this.http.get<TrackedRecord[]>(`${API_URL}/track`).subscribe((data) => {
       this.records.next(data);
-    }, error => this.snackBar.open('Error' + JSON.stringify(error), 'OK'));
+    }, error => this.snackBar.open('Error' + error.message, 'OK'));
   }
 
   public fetchTripLeft(): void {

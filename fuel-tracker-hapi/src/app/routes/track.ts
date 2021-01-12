@@ -17,11 +17,15 @@ export const plugin = {
       path: '/',
       handler: async (request, h) => {
         try {
-          const tracks: Track[] = await database(Table.track).orderBy('id', 'desc');
-          return trackSerializer.index(tracks);
+          const trackedData: Track[] = await database(Table.track).orderBy('id', 'desc');
+          if (trackedData) {
+            return trackSerializer.index(trackedData);
+          } else {
+            throw Boom.notFound()
+          }
         } catch (error) {
           logger.error(error);
-          throw Boom.unauthorized()
+          throw Boom.badRequest()
         }
       }
     });
@@ -31,11 +35,15 @@ export const plugin = {
       path: '/latest',
       handler: async (request, h) => {
         try {
-          const tracks: Track[] = await database(Table.track).orderBy('id', 'desc').limit(5).offset(0);
-          return trackSerializer.index(tracks);
+          const trackedData: Track[] = await database(Table.track).orderBy('id', 'desc').limit(5).offset(0);
+          if (trackedData) {
+            return trackSerializer.index(trackedData);
+          } else {
+            throw Boom.notFound()
+          }
         } catch (error) {
           logger.error(error);
-          throw Boom.unauthorized()
+          throw Boom.badRequest()
         }
       }
     });
@@ -53,7 +61,7 @@ export const plugin = {
           }
         } catch (error) {
           logger.error(error);
-          throw Boom.unauthorized()
+          throw Boom.badRequest()
         }
       }
     });
@@ -74,7 +82,7 @@ export const plugin = {
           }
         } catch (error) {
           logger.error(error);
-          throw Boom.unauthorized()
+          throw Boom.badRequest()
         }
       }
     });
@@ -85,10 +93,14 @@ export const plugin = {
         const id = request.params.id;
         try {
           const track: Track = await database(Table.track).where({ id: request.params.id }).first();
-          return trackSerializer.show(track);
+          if (track) {
+            return trackSerializer.show(track);
+          } else {
+            throw Boom.notFound()
+          }
         } catch (error) {
           logger.error(error);
-          throw Boom.notFound();
+          throw Boom.badRequest();
         }
       }
     })
@@ -116,7 +128,7 @@ export const plugin = {
           }
         } catch (error) {
           logger.error(error);
-          throw Boom.notFound();
+          throw Boom.badRequest();
         }
       }
     })
@@ -149,12 +161,12 @@ export const plugin = {
               updatedCar.currentFuelLevel = payload.amountFilled,
               updatedCar.fuelPercent = (updatedCar.currentFuelLevel / car.tankSize) * 100
           };
-          await database(Table.track).insert(track);
           await database(Table.car).update(updatedCar).where('id', 1);
+          await database(Table.track).insert(track);
           return h.response(track);
         } catch (error) {
           logger.error(error);
-          throw Boom.notFound();
+          throw Boom.badRequest('You will run out of fuel with these numbers.');
         }
       }
     })
