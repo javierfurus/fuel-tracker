@@ -7,6 +7,7 @@ import logger from '../../lib/logger';
 import * as Boom from "@hapi/boom";
 import { Road } from '../../lib/road';
 import { Car } from '../models/car';
+import { TrackController } from '../controllers/track.controller';
 
 export const plugin = {
   name: "TrackRoutes",
@@ -136,39 +137,7 @@ export const plugin = {
     server.route({
       method: 'POST',
       path: '/',
-      handler: async (request, h) => {
-        try {
-          const lastTrip: Partial<Track> = await database.select('tripState').from(Table.track).orderBy('id', 'desc').first();
-          const payload = request.payload as Track;
-          const track: Partial<Track> = {};
-          const car: Car = await database(Table.car).where('id', 1).first();
-          const updatedCar: Partial<Car> = {};
-          if (lastTrip) {
-            const averageConsumption = (payload.roadType === Road.City) ? 0.084 : 0.055;
-            track.tripState = payload.tripState,
-              track.roadType = payload.roadType,
-              track.gasType = payload.gasType,
-              track.amountFilled = payload.amountFilled,
-              updatedCar.tripState = car.tripState + payload.tripState,
-              updatedCar.currentFuelLevel = (car.currentFuelLevel + payload.amountFilled) - (averageConsumption * (payload.tripState)),
-              updatedCar.fuelPercent = (updatedCar.currentFuelLevel / car.tankSize) * 100
-          } else {
-            track.tripState = payload.tripState,
-              track.roadType = payload.roadType,
-              track.gasType = payload.gasType,
-              track.amountFilled = payload.amountFilled,
-              updatedCar.tripState = payload.tripState,
-              updatedCar.currentFuelLevel = payload.amountFilled,
-              updatedCar.fuelPercent = (updatedCar.currentFuelLevel / car.tankSize) * 100
-          };
-          await database(Table.car).update(updatedCar).where('id', 1);
-          await database(Table.track).insert(track);
-          return h.response(track);
-        } catch (error) {
-          logger.error(error);
-          throw Boom.badRequest('You will run out of fuel with these numbers.');
-        }
-      }
+      handler: TrackController.create
     })
 
     server.route({
